@@ -5,10 +5,11 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'java-gradle-plugin'
 }
 
 apply plugin: 'maven'
-apply plugin: com.github.jazzmuesli.ck.gradle.plugin.MetricsPlugin
+//apply plugin: 'CkGradlePlugin'
 
 repositories {
     mavenLocal()
@@ -20,12 +21,22 @@ repositories {
 dependencies {
     compile 'junit:junit:4.12'
     compile 'com.github.mauricioaniche:ck:0.3.2-SNAPSHOT'
+    compile gradleApi()
 }
 
 group = 'com.github.jazzmuesli'
 version = '1.0-SNAPSHOT'
 description = 'ck-gradle-plugin'
 sourceCompatibility = '1.8'
+
+gradlePlugin {
+    plugins {
+        ckGradlePlugin {
+            id = 'CkGradlePlugin'
+            implementationClass = 'com.github.jazzmuesli.ck.gradle.plugin.MetricsPlugin'
+        }
+    }
+}
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
