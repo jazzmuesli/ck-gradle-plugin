@@ -7,8 +7,6 @@ plugins {
     id 'maven-publish'
 }
 
-apply plugin: com.github.jazzmuesli.ck.gradle.plugin.MetricsPlugin
-
 repositories {
     mavenLocal()
     maven {
