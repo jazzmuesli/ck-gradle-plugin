@@ -7,6 +7,8 @@ plugins {
     id 'maven-publish'
 }
 
+
+apply plugin: 'maven'
 repositories {
     mavenLocal()
     maven {
@@ -17,6 +19,8 @@ repositories {
 dependencies {
     compile 'junit:junit:4.12'
     compile 'com.github.mauricioaniche:ck:0.3.2-SNAPSHOT'
+
+    compile gradleApi()
 }
 
 group = 'com.github.jazzmuesli'
