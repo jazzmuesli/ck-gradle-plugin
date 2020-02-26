@@ -13,13 +13,13 @@ apply plugin: 'maven'
 repositories {
     mavenLocal()
     maven {
-        url = 'http://repo.maven.apache.org/maven2'
+        url = 'https://repo.maven.apache.org/maven2'
     }
 }
 
 dependencies {
     compile 'junit:junit:4.12'
-    compile 'com.github.mauricioaniche:ck:0.3.2-SNAPSHOT'
+    compile 'com.github.mauricioaniche:ck:0.4.4-SNAPSHOT'
     compile gradleApi()
 }
 
