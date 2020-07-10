@@ -9,7 +9,6 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskAction;
 
-
 import com.github.mauricioaniche.ck.CK;
 
 import java.io.File;
@@ -23,23 +22,25 @@ import java.util.Set;
 public class MetricsTask extends DefaultTask {
 
 	private Project project;
+
 	public void setProject(Project project) {
 		this.project = project;
 	}
 
-    @TaskAction
+	@TaskAction
 	void processDirectories() {
 		try {
-			
+
 			String projectDir = project.getProjectDir().getAbsolutePath();
 			Path path = Paths.get(projectDir, "sourceDirs.csv");
 			System.out.println("projectDir: " + projectDir + ", csvPath: " + path);
-			CSVPrinter printer = new CSVPrinter(Files.newBufferedWriter(path), CSVFormat.DEFAULT
-					.withHeader("sourceSetName", "dirName","processed").withSystemRecordSeparator().withDelimiter(';'));
+			CSVPrinter printer = new CSVPrinter(Files.newBufferedWriter(path),
+					CSVFormat.DEFAULT.withHeader("sourceSetName", "dirName", "processed").withSystemRecordSeparator()
+							.withDelimiter(';'));
 
 			SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class)
 					.getSourceSets();
-			
+
 			for (Map.Entry<String, SourceSet> entry : sourceSets.getAsMap().entrySet()) {
 				SourceSet sourceSet = entry.getValue();
 				Set<File> srcDirs = sourceSet.getAllJava().getSrcDirs();
@@ -57,24 +58,24 @@ public class MetricsTask extends DefaultTask {
 		}
 	}
 
-    private boolean processSourceDirectory(String dirName) {
-        try {
-            if (new File(dirName).exists()) {
-                System.out.printf("processing: " + dirName);
-                MetricsWriter writer = createMetricsWriter(dirName);
-                new CK().calculate(dirName, writer);
-                writer.finish();
-                return true;
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	private boolean processSourceDirectory(String dirName) {
+		try {
+			if (new File(dirName).exists()) {
+				System.out.printf("processing: " + dirName);
+				MetricsWriter writer = createMetricsWriter(dirName);
+				new CK().calculate(dirName, writer);
+				writer.finish();
+				return true;
+			}
 
-    protected MetricsWriter createMetricsWriter(String dirName) {
-        MetricsCSVWriter writer = new MetricsCSVWriter(dirName);
-        return writer;
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	protected MetricsWriter createMetricsWriter(String dirName) {
+		MetricsCSVWriter writer = new MetricsCSVWriter(dirName);
+		return writer;
+	}
 }
